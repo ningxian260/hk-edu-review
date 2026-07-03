@@ -1,0 +1,196 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum InstitutionType {
+  SCHOOL
+  EDUCATION_CENTRE
+}
+
+enum VerificationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum ReviewStatus {
+  PENDING
+  PUBLISHED
+  HIDDEN
+  REJECTED
+}
+
+enum ReviewerIdentity {
+  VERIFIED_PARENT
+  VERIFIED_TEACHER
+  REGISTERED_EDUCATOR
+  STUDENT
+  ALUMNI
+  EDUCATION_PROFESSIONAL
+}
+
+model User {
+  id                    String                @id @default(cuid())
+  name                  String?
+  email                 String?               @unique
+  emailVerified         DateTime?
+  image                 String?
+  role                  UserRole              @default(USER)
+  verifiedIdentity      ReviewerIdentity?
+  identityVerifiedAt    DateTime?
+  accounts              Account[]
+  sessions              Session[]
+  reviews               Review[]
+  verificationRequests  VerificationRequest[]
+  moderationActions     ReviewModerationAction[]
+  createdAt             DateTime              @default(now())
+  updatedAt             DateTime              @updatedAt
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model District {
+  id           String        @id @default(cuid())
+  name         String        @unique
+  region       String
+  slug         String        @unique
+  institutions Institution[]
+}
+
+model Category {
+  id           String        @id @default(cuid())
+  name         String        @unique
+  slug         String        @unique
+  institutions Institution[]
+}
+
+model Institution {
+  id               String            @id @default(cuid())
+  name             String
+  slug             String            @unique
+  type             InstitutionType
+  districtId       String
+  district         District          @relation(fields: [districtId], references: [id])
+  categories       Category[]
+  overview         String            @db.Text
+  shortDescription String
+  address          String?
+  contactEmail     String?
+  contactPhone     String?
+  website          String?
+  tuitionFee       String?
+  sourceUrl        String
+  sourceLabel      String
+  coverImage       String?
+  photos           InstitutionPhoto[]
+  reviews          Review[]
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+}
+
+model InstitutionPhoto {
+  id            String      @id @default(cuid())
+  institutionId String
+  url           String
+  alt           String
+  institution   Institution @relation(fields: [institutionId], references: [id], onDelete: Cascade)
+}
+
+model Review {
+  id             String                  @id @default(cuid())
+  institutionId  String
+  institution    Institution             @relation(fields: [institutionId], references: [id], onDelete: Cascade)
+  userId         String
+  user           User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  rating         Int
+  title          String
+  content        String                  @db.Text
+  identity       ReviewerIdentity
+  identityVerified Boolean               @default(false)
+  status         ReviewStatus            @default(PENDING)
+  ratingBreakdown ReviewRatingBreakdown?
+  moderationActions ReviewModerationAction[]
+  createdAt      DateTime                @default(now())
+  updatedAt      DateTime                @updatedAt
+}
+
+model ReviewRatingBreakdown {
+  id                     String @id @default(cuid())
+  reviewId               String @unique
+  review                 Review @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  teachingQuality        Int
+  curriculum             Int
+  teacherProfessionalism Int
+  learningEnvironment    Int
+  communication          Int
+  valueForMoney          Int
+  studentEngagement      Int
+}
+
+model VerificationRequest {
+  id               String             @id @default(cuid())
+  userId           String
+  user             User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  requestedIdentity ReviewerIdentity
+  status           VerificationStatus @default(PENDING)
+  statement        String             @db.Text
+  proofFilePath    String?
+  proofFileName    String?
+  proofFileType    String?
+  reviewedById     String?
+  reviewNote       String?
+  createdAt        DateTime           @default(now())
+  reviewedAt       DateTime?
+}
+
+model ReviewModerationAction {
+  id          String       @id @default(cuid())
+  reviewId    String
+  review      Review       @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  moderatorId String
+  moderator   User         @relation(fields: [moderatorId], references: [id], onDelete: Cascade)
+  status      ReviewStatus
+  note        String?
+  createdAt   DateTime     @default(now())
+}

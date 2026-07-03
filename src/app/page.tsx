@@ -1,65 +1,103 @@
-import Image from "next/image";
+import Link from "next/link";
+import { ArrowRight, BadgeCheck, Building2, Search, ShieldCheck, Star } from "lucide-react";
 
-export default function Home() {
+import { FilterForm } from "@/components/filter-form";
+import { InstitutionCard } from "@/components/institution-card";
+import { getDistrictStats, getFilterOptions, getInstitutions } from "@/lib/institutions";
+
+export default async function Home() {
+  const [institutions, districtStats, filterOptions] = await Promise.all([getInstitutions(), getDistrictStats(), getFilterOptions()]);
+  const featured = institutions.slice(0, 3);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <main>
+      <section className="relative overflow-hidden">
+        <div className="mx-auto grid min-h-[calc(100vh-76px)] max-w-7xl content-center gap-10 px-4 py-12 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:px-8">
+          <div className="space-y-8">
+            <div className="inline-flex items-center gap-2 rounded-full border border-cyan-200/20 bg-cyan-200/10 px-4 py-2 text-sm text-cyan-100">
+              <ShieldCheck className="size-4" aria-hidden="true" />
+              不接受匿名評論，重視真實身份
+            </div>
+            <div className="space-y-5">
+              <h1 className="max-w-4xl text-4xl font-semibold leading-tight text-white sm:text-6xl">
+                用可信評論，選擇適合孩子的香港教育機構。
+              </h1>
+              <p className="max-w-2xl text-lg leading-8 text-slate-300">
+                搜尋學校、教育中心和學習課程，查看已驗證家長、教師、學生、校友及教育專業人士的真實評價。
+              </p>
+            </div>
+            <FilterForm {...filterOptions} />
+            <div className="grid gap-3 sm:grid-cols-3">
+              {[
+                ["已收錄機構", institutions.length.toString(), Building2],
+                ["已驗證評論", institutions.reduce((total, item) => total + item.reviewCount, 0).toString(), BadgeCheck],
+                ["平均評分", "4.4", Star],
+              ].map(([label, value, Icon]) => (
+                <div key={String(label)} className="surface p-4">
+                  <Icon className="mb-3 size-5 text-cyan-200" aria-hidden="true" />
+                  <p className="text-2xl font-semibold text-white">{String(value)}</p>
+                  <p className="mt-1 text-sm text-slate-400">{String(label)}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="relative hidden lg:block">
+            <div className="absolute inset-x-12 top-8 h-72 rounded-full bg-cyan-300/10 blur-3xl" />
+            <div className="relative grid gap-4">
+              {featured.map((institution, index) => (
+                <div key={institution.slug} className={index === 1 ? "ml-12" : index === 2 ? "ml-24" : ""}>
+                  <InstitutionCard institution={institution} />
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      <section className="border-t border-white/10 bg-black/15 px-4 py-14 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl space-y-8">
+          <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+            <div>
+              <p className="eyebrow">按地區瀏覽</p>
+              <h2 className="mt-3 text-3xl font-semibold text-white">香港島、九龍、新界，一眼比較</h2>
+            </div>
+            <Link className="secondary-button w-fit" href="/institutions">
+              查看全部
+              <ArrowRight className="size-4" aria-hidden="true" />
+            </Link>
+          </div>
+          <div className="grid gap-4 md:grid-cols-3">
+            {districtStats.map((district) => (
+              <Link
+                href={`/institutions?district=${district.slug}`}
+                key={district.slug}
+                className="surface group flex items-center justify-between gap-4 p-5 transition hover:border-cyan-300/40 hover:bg-white/[0.08]"
+              >
+                <span>
+                  <span className="block text-sm text-cyan-200">{district.region}</span>
+                  <span className="mt-1 block text-xl font-semibold text-white">{district.name}</span>
+                </span>
+                <span className="rounded-full bg-white/10 px-3 py-1 text-sm text-slate-300">{district.count} 間</span>
+              </Link>
+            ))}
+          </div>
         </div>
-      </main>
-    </div>
+      </section>
+
+      <section className="px-4 py-14 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl space-y-8">
+          <div className="flex items-center gap-3">
+            <Search className="size-6 text-cyan-200" aria-hidden="true" />
+            <h2 className="text-3xl font-semibold text-white">精選機構</h2>
+          </div>
+          <div className="grid gap-5 lg:grid-cols-3">
+            {featured.map((institution) => (
+              <InstitutionCard key={institution.slug} institution={institution} />
+            ))}
+          </div>
+        </div>
+      </section>
+    </main>
   );
 }

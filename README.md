@@ -1,36 +1,83 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 香港教育評價平台 MVP
 
-## Getting Started
+一個以繁體中文香港用語建立的教育評價平台 MVP，重點是可信評論、真實身份、學校與教育中心搜尋，以及管理員審核流程。
 
-First, run the development server:
+## 功能
+
+- Next.js App Router、TypeScript、Tailwind CSS
+- PostgreSQL + Prisma schema
+- NextAuth / Auth.js，支援 Google 和 Email provider 設定
+- 首頁搜尋、地區瀏覽、機構列表、機構詳情頁
+- 已驗證身份評論與七項分項評分
+- 文件式身份驗證申請，證明文件存於 Supabase Storage 私有 bucket
+- 管理後台：身份驗證審核、評論審核、基本統計
+- 無 `DATABASE_URL` 時可用內建預覽資料瀏覽公開頁面
+
+## 啟動
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+打開 http://localhost:3000。
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Supabase 資料庫設定
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. 到 Supabase 建立新 project。
+2. 在 SQL Editor 建立 Prisma 專用資料庫用戶，並授權 public schema。
+3. 到 Project Settings > Connect 複製 Supavisor Session pooler 連線字串。
+4. 把 `.env` 的 `DATABASE_URL` 換成真實 Supabase 連線字串。
+5. 確認 `ADMIN_EMAIL` 是第一個管理員電郵。
+6. 初始化資料庫：
 
-## Learn More
+```bash
+npm run db:generate
+npm run db:push
+npm run db:seed
+```
 
-To learn more about Next.js, take a look at the following resources:
+`ADMIN_EMAIL` 對應的帳戶會在 seed 時建立為管理員。
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Supabase Prisma SQL 範例：
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```sql
+create user "prisma" with password 'your_secure_password' bypassrls createdb;
+grant "prisma" to "postgres";
+grant usage on schema public to prisma;
+grant create on schema public to prisma;
+grant all on all tables in schema public to prisma;
+grant all on all routines in schema public to prisma;
+grant all on all sequences in schema public to prisma;
+alter default privileges for role postgres in schema public grant all on tables to prisma;
+alter default privileges for role postgres in schema public grant all on routines to prisma;
+alter default privileges for role postgres in schema public grant all on sequences to prisma;
+```
 
-## Deploy on Vercel
+本地開發使用 Session pooler，通常是 `:5432/postgres`。如果之後部署到 serverless 環境，再考慮 Supavisor transaction mode。
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 驗證
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run lint
+npm run test
+npm run build
+```
+
+## Supabase Storage 設定
+
+身份驗證證明文件會上傳到 Supabase Storage 私有 bucket。到 Supabase Dashboard > Storage 建立一個 private bucket，建議名稱為 `verification-proofs`。
+
+`.env` 需要加入：
+
+```bash
+SUPABASE_URL="https://[PROJECT-REF].supabase.co"
+SUPABASE_SERVICE_ROLE_KEY="your-service-role-key"
+SUPABASE_STORAGE_BUCKET="verification-proofs"
+```
+
+`SUPABASE_SERVICE_ROLE_KEY` 只可放在伺服器環境變數，不要放入前端公開變數或提交到 Git。後台下載證明文件時會先檢查管理員權限，再由伺服器從 private bucket 讀取文件。
+
+## 資料來源
+
+首批機構資料以公開可核查來源建立，並在每筆資料保留來源網址。學校和教育中心的電話、學費、校區等易變資料只在可佐證時展示，否則提示以官方公布為準。
