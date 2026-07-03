@@ -31,6 +31,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: isDatabaseConfigured ? PrismaAdapter(prisma) : undefined,
   secret: process.env.AUTH_SECRET ?? (process.env.NODE_ENV === "development" ? "local-development-secret-change-before-production" : undefined),
   session: { strategy: isDatabaseConfigured ? "database" : "jwt" },
+  trustHost: true,
   providers,
   pages: {
     signIn: "/login",

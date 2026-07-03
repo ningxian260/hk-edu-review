@@ -64,6 +64,38 @@ npm run test
 npm run build
 ```
 
+## Render 免費部署
+
+此專案已包含 `render.yaml`，可部署為 Render Free Web Service。免費服務閒置一段時間後會休眠，第一次打開可能需要等待啟動。
+
+Render 建議設定：
+
+- Service type: Web Service
+- Instance type: Free
+- Build Command: `npm ci && npm run build`
+- Start Command: `npm run start`
+
+Render Environment Variables 需要加入：
+
+```bash
+DATABASE_URL=""
+AUTH_SECRET=""
+AUTH_URL="https://your-app.onrender.com"
+AUTH_TRUST_HOST="true"
+AUTH_GOOGLE_ID=""
+AUTH_GOOGLE_SECRET=""
+ADMIN_EMAIL=""
+SUPABASE_URL=""
+SUPABASE_SERVICE_ROLE_KEY=""
+SUPABASE_STORAGE_BUCKET="verification-proofs"
+```
+
+部署完成後，到 Google Cloud Console 把正式回調地址加入 OAuth Client：
+
+```text
+https://your-app.onrender.com/api/auth/callback/google
+```
+
 ## Supabase Storage 設定
 
 身份驗證證明文件會上傳到 Supabase Storage 私有 bucket。到 Supabase Dashboard > Storage 建立一個 private bucket，建議名稱為 `verification-proofs`。
