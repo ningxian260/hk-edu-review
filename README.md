@@ -80,6 +80,7 @@ Render Environment Variables 需要加入：
 ```bash
 DATABASE_URL=""
 AUTH_SECRET=""
+NEXTAUTH_SECRET=""
 AUTH_URL="https://your-app.onrender.com"
 AUTH_TRUST_HOST="true"
 AUTH_GOOGLE_ID=""

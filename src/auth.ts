@@ -7,6 +7,10 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import { isDatabaseConfigured, prisma } from "@/lib/prisma";
 
 const providers: Provider[] = [];
+const authSecret =
+  process.env.AUTH_SECRET ??
+  process.env.NEXTAUTH_SECRET ??
+  (process.env.NODE_ENV === "development" ? "local-development-secret-change-before-production" : undefined);
 
 if (process.env.AUTH_GOOGLE_ID && process.env.AUTH_GOOGLE_SECRET) {
   providers.push(
@@ -29,7 +33,7 @@ if (isDatabaseConfigured && process.env.EMAIL_SERVER && process.env.EMAIL_FROM) 
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: isDatabaseConfigured ? PrismaAdapter(prisma) : undefined,
-  secret: process.env.AUTH_SECRET ?? (process.env.NODE_ENV === "development" ? "local-development-secret-change-before-production" : undefined),
+  secret: authSecret,
   session: { strategy: isDatabaseConfigured ? "database" : "jwt" },
   trustHost: true,
   providers,
