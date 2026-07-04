@@ -21,6 +21,8 @@ services:
         sync: false
       - key: AUTH_URL
         sync: false
+      - key: NEXTAUTH_URL
+        sync: false
       - key: AUTH_GOOGLE_ID
         sync: false
       - key: AUTH_GOOGLE_SECRET
