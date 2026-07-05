@@ -9,10 +9,10 @@ export async function SiteHeader() {
   const session = await auth();
 
   return (
-    <header className="sticky top-0 z-40 border-b border-white/10 bg-[#070a12]/85 backdrop-blur-xl">
+    <header className="sticky top-0 z-40 border-b border-pink-100/10 bg-[#190711]/86 backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
         <Link href="/" className="flex min-w-0 items-center gap-3">
-          <span className="grid size-10 shrink-0 place-items-center rounded-2xl bg-cyan-400 text-slate-950 shadow-[0_0_32px_rgba(34,211,238,0.28)]">
+          <span className="grid size-10 shrink-0 place-items-center rounded-2xl bg-pink-300 text-rose-950 shadow-[0_0_32px_rgba(244,114,182,0.32)]">
             <ShieldCheck className="size-5" aria-hidden="true" />
           </span>
           <span className="min-w-0">
@@ -38,7 +38,7 @@ export async function SiteHeader() {
             <>
               <div className="hidden max-w-48 text-right sm:block">
                 <p className="truncate text-sm font-medium text-white">{session.user.name ?? session.user.email}</p>
-                <p className="truncate text-xs text-cyan-200">
+                <p className="truncate text-xs text-pink-200">
                   {session.user.verifiedIdentity ? identityLabels[session.user.verifiedIdentity] : roleLabels[session.user.role]}
                 </p>
               </div>

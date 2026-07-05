@@ -31,7 +31,7 @@ export default function LoginPage() {
               </button>
             </form>
           ) : (
-            <ProviderNotice label="Google 登入" />
+            <ProviderNotice />
           )}
 
           {emailReady ? (
@@ -45,9 +45,7 @@ export default function LoginPage() {
                 收取登入連結
               </button>
             </form>
-          ) : (
-            <ProviderNotice label="Email 登入" />
-          )}
+          ) : null}
         </div>
 
         <Link className="text-sm text-cyan-200 hover:text-cyan-100" href="/institutions">
@@ -58,10 +56,10 @@ export default function LoginPage() {
   );
 }
 
-function ProviderNotice({ label }: { label: string }) {
+function ProviderNotice() {
   return (
     <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4 text-sm text-slate-400">
-      {label} 尚未設定。請在 `.env` 填入相關環境變數。
+      Google 登入暫時未能使用。
     </div>
   );
 }

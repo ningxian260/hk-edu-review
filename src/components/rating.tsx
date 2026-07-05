@@ -28,7 +28,7 @@ export function RatingBar({ label, value }: { label: string; value: number }) {
         <span className="font-medium text-white">{value.toFixed(1)}</span>
       </div>
       <div className="h-2 overflow-hidden rounded-full bg-white/10">
-        <div className="h-full rounded-full bg-cyan-300" style={{ width }} />
+        <div className="h-full rounded-full bg-pink-300" style={{ width }} />
       </div>
     </div>
   );

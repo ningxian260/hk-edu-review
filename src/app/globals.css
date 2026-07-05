@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #070a12;
-  --foreground: #eef6ff;
+  --background: #190711;
+  --foreground: #fff5f8;
 }
 
 @theme inline {
@@ -31,14 +31,15 @@ body::before {
   inset: 0;
   z-index: -2;
   background:
-    linear-gradient(135deg, rgba(34, 211, 238, 0.12), transparent 28%),
-    radial-gradient(circle at 70% 10%, rgba(16, 185, 129, 0.12), transparent 26%),
-    #070a12;
+    linear-gradient(135deg, rgba(244, 114, 182, 0.22), transparent 30%),
+    radial-gradient(circle at 72% 8%, rgba(251, 113, 133, 0.18), transparent 28%),
+    radial-gradient(circle at 8% 86%, rgba(190, 24, 93, 0.2), transparent 28%),
+    #190711;
   content: "";
 }
 
 ::selection {
-  background: rgba(103, 232, 249, 0.35);
+  background: rgba(244, 114, 182, 0.38);
 }
 
 select option {
@@ -48,11 +49,17 @@ select option {
 
 @layer components {
   .primary-button {
-    @apply inline-flex min-h-11 items-center gap-2 rounded-2xl bg-cyan-300 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200 focus:outline-none focus:ring-2 focus:ring-cyan-200 focus:ring-offset-2 focus:ring-offset-slate-950;
+    @apply inline-flex min-h-11 items-center gap-2 rounded-2xl bg-pink-300 px-4 py-2 text-sm font-semibold text-rose-950 transition hover:bg-pink-200 focus:outline-none focus:ring-2 focus:ring-pink-200 focus:ring-offset-2 focus:ring-offset-rose-950;
+    background-color: #f9a8d4;
+    color: #4a061d;
+  }
+
+  .primary-button:hover {
+    background-color: #fbcfe8;
   }
 
   .secondary-button {
-    @apply inline-flex min-h-11 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.06] px-4 py-2 text-sm font-medium text-white transition hover:border-cyan-200/40 hover:bg-white/[0.1] focus:outline-none focus:ring-2 focus:ring-cyan-200 focus:ring-offset-2 focus:ring-offset-slate-950;
+    @apply inline-flex min-h-11 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.06] px-4 py-2 text-sm font-medium text-white transition hover:border-pink-200/50 hover:bg-white/[0.1] focus:outline-none focus:ring-2 focus:ring-pink-200 focus:ring-offset-2 focus:ring-offset-rose-950;
   }
 
   .nav-link {
@@ -60,14 +67,14 @@ select option {
   }
 
   .field {
-    @apply min-h-12 w-full rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 text-sm text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-300/60 focus:ring-2 focus:ring-cyan-300/20;
+    @apply min-h-12 w-full rounded-2xl border border-white/10 bg-rose-950/50 px-4 py-3 text-sm text-white outline-none transition placeholder:text-rose-200/45 focus:border-pink-300/70 focus:ring-2 focus:ring-pink-300/20;
   }
 
   .surface {
-    @apply rounded-[28px] border border-white/10 bg-white/[0.055] shadow-2xl shadow-black/20;
+    @apply rounded-[28px] border border-pink-100/15 bg-white/[0.065] shadow-2xl shadow-rose-950/25;
   }
 
   .eyebrow {
-    @apply text-sm font-semibold uppercase tracking-[0.2em] text-cyan-200;
+    @apply text-sm font-semibold uppercase tracking-[0.2em] text-pink-200;
   }
 }

@@ -14,7 +14,7 @@ export default async function Home() {
       <section className="relative overflow-hidden">
         <div className="mx-auto grid min-h-[calc(100vh-76px)] max-w-7xl content-center gap-10 px-4 py-12 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:px-8">
           <div className="space-y-8">
-            <div className="inline-flex items-center gap-2 rounded-full border border-cyan-200/20 bg-cyan-200/10 px-4 py-2 text-sm text-cyan-100">
+            <div className="inline-flex items-center gap-2 rounded-full border border-pink-200/25 bg-pink-200/12 px-4 py-2 text-sm text-pink-100">
               <ShieldCheck className="size-4" aria-hidden="true" />
               不接受匿名評論，重視真實身份
             </div>
@@ -34,7 +34,7 @@ export default async function Home() {
                 ["平均評分", "4.4", Star],
               ].map(([label, value, Icon]) => (
                 <div key={String(label)} className="surface p-4">
-                  <Icon className="mb-3 size-5 text-cyan-200" aria-hidden="true" />
+                  <Icon className="mb-3 size-5 text-pink-200" aria-hidden="true" />
                   <p className="text-2xl font-semibold text-white">{String(value)}</p>
                   <p className="mt-1 text-sm text-slate-400">{String(label)}</p>
                 </div>
@@ -43,7 +43,7 @@ export default async function Home() {
           </div>
 
           <div className="relative hidden lg:block">
-            <div className="absolute inset-x-12 top-8 h-72 rounded-full bg-cyan-300/10 blur-3xl" />
+            <div className="absolute inset-x-12 top-8 h-72 rounded-full bg-pink-300/20 blur-3xl" />
             <div className="relative grid gap-4">
               {featured.map((institution, index) => (
                 <div key={institution.slug} className={index === 1 ? "ml-12" : index === 2 ? "ml-24" : ""}>
@@ -55,7 +55,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="border-t border-white/10 bg-black/15 px-4 py-14 sm:px-6 lg:px-8">
+      <section className="border-t border-pink-100/10 bg-pink-950/20 px-4 py-14 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl space-y-8">
           <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
             <div>
@@ -72,10 +72,10 @@ export default async function Home() {
               <Link
                 href={`/institutions?district=${district.slug}`}
                 key={district.slug}
-                className="surface group flex items-center justify-between gap-4 p-5 transition hover:border-cyan-300/40 hover:bg-white/[0.08]"
+                className="surface group flex items-center justify-between gap-4 p-5 transition hover:border-pink-300/50 hover:bg-white/[0.09]"
               >
                 <span>
-                  <span className="block text-sm text-cyan-200">{district.region}</span>
+                  <span className="block text-sm text-pink-200">{district.region}</span>
                   <span className="mt-1 block text-xl font-semibold text-white">{district.name}</span>
                 </span>
                 <span className="rounded-full bg-white/10 px-3 py-1 text-sm text-slate-300">{district.count} 間</span>
@@ -88,7 +88,7 @@ export default async function Home() {
       <section className="px-4 py-14 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl space-y-8">
           <div className="flex items-center gap-3">
-            <Search className="size-6 text-cyan-200" aria-hidden="true" />
+            <Search className="size-6 text-pink-200" aria-hidden="true" />
             <h2 className="text-3xl font-semibold text-white">精選機構</h2>
           </div>
           <div className="grid gap-5 lg:grid-cols-3">
