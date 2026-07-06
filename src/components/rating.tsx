@@ -12,8 +12,8 @@ export function RatingStars({ value, count }: { value: number; count?: number })
           />
         ))}
       </div>
-      <span className="font-semibold text-white">{value ? value.toFixed(1) : "未有評分"}</span>
-      {typeof count === "number" ? <span className="text-slate-400">({count} 則評論)</span> : null}
+      <span className="font-semibold text-gray-950">{value ? value.toFixed(1) : "未有評分"}</span>
+      {typeof count === "number" ? <span className="text-gray-600">({count} 則評論)</span> : null}
     </div>
   );
 }
@@ -24,11 +24,11 @@ export function RatingBar({ label, value }: { label: string; value: number }) {
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between gap-3 text-sm">
-        <span className="text-slate-300">{label}</span>
-        <span className="font-medium text-white">{value.toFixed(1)}</span>
+        <span className="text-gray-700">{label}</span>
+        <span className="font-medium text-gray-950">{value.toFixed(1)}</span>
       </div>
-      <div className="h-2 overflow-hidden rounded-full bg-white/10">
-        <div className="h-full rounded-full bg-pink-300" style={{ width }} />
+      <div className="h-2 overflow-hidden rounded-full bg-gray-200">
+        <div className="h-full rounded-full bg-gray-950" style={{ width }} />
       </div>
     </div>
   );

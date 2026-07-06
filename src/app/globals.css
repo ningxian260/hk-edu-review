@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #190711;
-  --foreground: #fff5f8;
+  --background: #ffffff;
+  --foreground: #111827;
 }
 
 @theme inline {
@@ -30,51 +30,102 @@ body::before {
   position: fixed;
   inset: 0;
   z-index: -2;
-  background:
-    linear-gradient(135deg, rgba(244, 114, 182, 0.22), transparent 30%),
-    radial-gradient(circle at 72% 8%, rgba(251, 113, 133, 0.18), transparent 28%),
-    radial-gradient(circle at 8% 86%, rgba(190, 24, 93, 0.2), transparent 28%),
-    #190711;
+  background: #ffffff;
   content: "";
 }
 
 ::selection {
-  background: rgba(244, 114, 182, 0.38);
+  background: rgba(17, 24, 39, 0.16);
 }
 
 select option {
-  background: #0f172a;
-  color: #ffffff;
+  background: #ffffff;
+  color: #111827;
 }
 
 @layer components {
   .primary-button {
-    @apply inline-flex min-h-11 items-center gap-2 rounded-2xl bg-pink-300 px-4 py-2 text-sm font-semibold text-rose-950 transition hover:bg-pink-200 focus:outline-none focus:ring-2 focus:ring-pink-200 focus:ring-offset-2 focus:ring-offset-rose-950;
-    background-color: #f9a8d4;
-    color: #4a061d;
+    @apply inline-flex min-h-11 items-center gap-2 rounded-2xl border px-4 py-2 text-sm font-semibold transition focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2;
+    border-color: #111827;
+    background-color: #ffffff;
+    color: #111827;
   }
 
   .primary-button:hover {
-    background-color: #fbcfe8;
+    background-color: #f3f4f6;
   }
 
   .secondary-button {
-    @apply inline-flex min-h-11 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.06] px-4 py-2 text-sm font-medium text-white transition hover:border-pink-200/50 hover:bg-white/[0.1] focus:outline-none focus:ring-2 focus:ring-pink-200 focus:ring-offset-2 focus:ring-offset-rose-950;
+    @apply inline-flex min-h-11 items-center justify-center rounded-2xl border px-4 py-2 text-sm font-medium transition focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2;
+    border-color: #d1d5db;
+    background-color: #ffffff;
+    color: #111827;
   }
 
   .nav-link {
-    @apply rounded-2xl px-3 py-2 text-sm font-medium text-slate-300 transition hover:bg-white/[0.06] hover:text-white;
+    @apply rounded-2xl px-3 py-2 text-sm font-medium transition;
+    color: #111827;
+  }
+
+  .nav-link:hover {
+    background-color: #f3f4f6;
+    color: #111827;
   }
 
   .field {
-    @apply min-h-12 w-full rounded-2xl border border-white/10 bg-rose-950/50 px-4 py-3 text-sm text-white outline-none transition placeholder:text-rose-200/45 focus:border-pink-300/70 focus:ring-2 focus:ring-pink-300/20;
+    @apply min-h-12 w-full rounded-2xl border px-4 py-3 text-sm outline-none transition focus:ring-2 focus:ring-gray-200;
+    border-color: #d1d5db;
+    background-color: #ffffff;
+    color: #111827;
+  }
+
+  .field::placeholder {
+    color: #6b7280;
   }
 
   .surface {
-    @apply rounded-[28px] border border-pink-100/15 bg-white/[0.065] shadow-2xl shadow-rose-950/25;
+    @apply rounded-[28px] border;
+    border-color: #e5e7eb;
+    background-color: #ffffff;
+    box-shadow: 0 12px 36px rgba(17, 24, 39, 0.08);
   }
 
   .eyebrow {
-    @apply text-sm font-semibold uppercase tracking-[0.2em] text-pink-200;
+    @apply text-sm font-semibold uppercase tracking-[0.2em];
+    color: #111827;
   }
+}
+
+.text-white,
+.text-slate-200,
+.text-slate-300,
+.text-slate-400,
+.text-slate-500,
+.text-pink-100,
+.text-pink-200,
+.text-pink-300,
+.text-cyan-100,
+.text-cyan-200,
+.text-cyan-300 {
+  color: #111827 !important;
+}
+
+.border-white\/10,
+.border-pink-100\/10,
+.border-pink-100\/15,
+.border-pink-100\/20 {
+  border-color: #e5e7eb !important;
+}
+
+[class*="bg-slate-950"],
+[class*="bg-rose-950"],
+[class*="bg-pink-950"],
+[class*="bg-black/"],
+[class*="bg-white/"] {
+  background-color: #ffffff !important;
+}
+
+[class*="shadow-black"],
+[class*="shadow-rose"] {
+  --tw-shadow-color: rgba(17, 24, 39, 0.08) !important;
 }
